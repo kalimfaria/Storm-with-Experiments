@@ -313,7 +313,7 @@
    :download-lock (Object.)
    })
 
-(defn sync-processes [supervisor]
+(defn sync-processes [supervisor] ;; This is where the reassignment actually happens for workers and executors
   (let [conf (:conf supervisor)
         download-lock (:download-lock supervisor)
         ^LocalState local-state (:local-state supervisor)
@@ -466,7 +466,7 @@
 
       (log-debug "Writing new assignment "
                  (pr-str new-assignment))
-      (doseq [p (set/difference (set (keys existing-assignment))
+      (doseq [p (set/difference (set (keys existing-assignment)) ;; we could've done all our Henge stuff here instead of in advancedstelascheduler :D
                                 (set (keys new-assignment)))]
         (.killedWorker isupervisor (int p)))
       (.assigned isupervisor (keys new-assignment))
@@ -499,7 +499,7 @@
   (let [supervisor (supervisor-data conf shared-context isupervisor)
         [event-manager processes-event-manager :as managers] [(event/event-manager false) (event/event-manager false)]
         sync-processes (partial sync-processes supervisor)
-        synchronize-supervisor (mk-synchronize-supervisor supervisor sync-processes event-manager processes-event-manager)
+        synchronize-supervisor (mk-synchronize-supervisor supervisor sync-processes event-manager processes-event-manager) ;; Here is how rebalance is performed (maybe) :D
         heartbeat-fn (fn [] (.supervisor-heartbeat!
                                (:storm-cluster-state supervisor)
                                (:supervisor-id supervisor)

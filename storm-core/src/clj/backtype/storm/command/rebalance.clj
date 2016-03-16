@@ -43,4 +43,5 @@
     (with-configured-nimbus-connection nimbus
       (.rebalance nimbus name opts)
       (log-message "Topology " name " is rebalancing")
-      )))
+      ))
+  )

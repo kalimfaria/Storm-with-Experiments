@@ -314,6 +314,59 @@ def rebalance(*args):
         jvmtype="-client",
         extrajars=[USER_CONF_DIR, STORM_BIN_DIR])
 
+def henge_rebalance(*args):
+    """Syntax: [storm rebalance topology-name [-w wait-time-secs] [-n new-num-workers] [-e component=parallelism]*]
+
+    Sometimes you may wish to spread out where the workers for a topology
+    are running. For example, let's say you have a 10 node cluster running
+    4 workers per node, and then let's say you add another 10 nodes to
+    the cluster. You may wish to have Storm spread out the workers for the
+    running topology so that each node runs 2 workers. One way to do this
+    is to kill the topology and resubmit it, but Storm provides a "rebalance"
+    command that provides an easier way to do this.
+
+    Rebalance will first deactivate the topology for the duration of the
+    message timeout (overridable with the -w flag) and then redistribute
+    the workers evenly around the cluster. The topology will then return to
+    its previous state of activation (so a deactivated topology will still
+    be deactivated and an activated topology will go back to being activated).
+
+    The rebalance command can also be used to change the parallelism of a running topology.
+    Use the -n and -e switches to change the number of workers or number of executors of a component
+    respectively.
+    """
+    print args
+    exec_storm_class(
+        "backtype.storm.command.henge_rebalance",
+        args= args,
+        jvmtype="-client",
+        extrajars=[USER_CONF_DIR, STORM_BIN_DIR])
+
+#    topology_args = []
+#    i = 0
+#    for x in args:
+#        i = i + 1
+#        if (x == "henge_rebalance"):
+#            topology_args.append("rebalance")
+#        elif (x != "-topology"):
+#            topology_args.append(x)
+#        if i > 2 and x == "-topology": # this will rebalance the first topology
+#            exec_storm_class(
+#                "backtype.storm.command.rebalance",
+#                args=topology_args,
+#                jvmtype="-client",
+#                extrajars=[USER_CONF_DIR, STORM_BIN_DIR])
+#            topology_args = []
+#            i = 1
+
+
+#    exec_storm_class(
+#        "backtype.storm.command.rebalance",
+#        args=args,
+#        jvmtype="-client",
+#        extrajars=[USER_CONF_DIR, STORM_BIN_DIR])
+
+
 def shell(resourcesdir, command, *args):
     tmpjarpath = "stormshell" + str(random.randint(0, 10000000)) + ".jar"
     os.system("jar cf %s %s" % (tmpjarpath, resourcesdir))
@@ -525,7 +578,7 @@ def unknown_command(*args):
 COMMANDS = {"jar": jar, "kill": kill, "shell": shell, "nimbus": nimbus, "ui": ui, "logviewer": logviewer,
             "drpc": drpc, "supervisor": supervisor, "localconfvalue": print_localconfvalue,
             "remoteconfvalue": print_remoteconfvalue, "repl": repl, "classpath": print_classpath,
-            "activate": activate, "deactivate": deactivate, "rebalance": rebalance, "help": print_usage,
+            "activate": activate, "deactivate": deactivate, "rebalance": rebalance, "help": print_usage, "henge-rebalance" : henge_rebalance,
             "list": listtopos, "dev-zookeeper": dev_zookeeper, "version": version, "monitor": monitor,
             "upload-credentials": upload_credentials}
 
