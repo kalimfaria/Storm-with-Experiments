@@ -17,14 +17,14 @@
  */
 package storm.starter;
 
-        import storm.starter.bolt.TestBolt;
-        import storm.starter.spout.TestSpout;
-        import backtype.storm.Config;
-        import backtype.storm.StormSubmitter;
-        import backtype.storm.topology.BoltDeclarer;
-        import backtype.storm.topology.TopologyBuilder;
+import backtype.storm.Config;
+import backtype.storm.StormSubmitter;
+import backtype.storm.topology.BoltDeclarer;
+import backtype.storm.topology.TopologyBuilder;
+import storm.starter.bolt.TestBolt;
+import storm.starter.spout.TestSpout;
 
-public class DiamondTopology {
+public class DiamondTopology_NoAcking {
   public static void main(String[] args) throws Exception {
     int paralellism = 6;
 
@@ -46,7 +46,7 @@ public class DiamondTopology {
     Config conf = new Config();
     conf.setDebug(true);
 
-    conf.setNumAckers(20);
+    conf.setNumAckers(0);
 
     conf.setTopologySlo(1.0);
 

@@ -1,8 +1,5 @@
 package storm.starter.bolt;
 
-import java.util.Map;
-import java.util.Random;
-
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
@@ -11,6 +8,9 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
+
+import java.util.Map;
+import java.util.Random;
 
 public class FilterBolt_WithAcking extends BaseRichBolt{
 	OutputCollector _collector;
@@ -28,7 +28,7 @@ public class FilterBolt_WithAcking extends BaseRichBolt{
     	Utils.sleep(length);
     	if(_rand.nextDouble()<0.8){
     		_collector.emit(tuple, new Values(tuple.getString(0)));
-    	    //_collector.ack(tuple);
+    	    _collector.ack(tuple);
     	}
     }
 

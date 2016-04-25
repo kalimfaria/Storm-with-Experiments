@@ -1403,6 +1403,10 @@ public class Config extends HashMap<String, Object> {
     public static final String TOPOLOGY_SLO="topology.slo";
     public static final Object TOPOLOGY_SLO_SCHEMA = ConfigValidation.SLOValidator;
 
+    public static final String TOPOLOGY_LATENCY_SLO="topology.latency.slo";
+    public static final Object TOPOLOGY_LATENCY_SLO_SCHEMA = ConfigValidation.PositiveNumberValidator; // MUST BE A POSITIVE NUMBER
+
+
     public static final String STELA_SLO_OBSERVER_INTERVAL = "nimbus.stela.slo.observer.interval";
     public static final Object STELA_SLO_OBSERVER_INTERVAL_SCHEMA = ConfigValidation.IntegerValidator;
 
@@ -1564,8 +1568,18 @@ public class Config extends HashMap<String, Object> {
         conf.put(Config.TOPOLOGY_SLO, slo);
     }
 
+
+    public static void setTopologyLatencySlo(Map conf, double slo) {
+        conf.put(Config.TOPOLOGY_LATENCY_SLO, slo);
+    }
+
     public void setTopologySlo(double slo) {
         setTopologySlo(this, slo);
+    }
+
+    public void setTopologyLatencySlo(double latency_slo) {
+
+        setTopologyLatencySlo(this, latency_slo);
     }
 
 
@@ -1575,6 +1589,18 @@ public class Config extends HashMap<String, Object> {
             ret = 0.0;
         } else {
             ret = (double) conf.get(Config.TOPOLOGY_SLO);
+        }
+
+        return ret;
+
+    }
+
+    public static double getTopologyLatencySlo(Map conf) {
+        double ret = 0.0;
+        if(!conf.containsKey(Config.TOPOLOGY_LATENCY_SLO)) {
+            ret = 0.0;
+        } else {
+            ret = (double) conf.get(Config.TOPOLOGY_LATENCY_SLO);
         }
 
         return ret;

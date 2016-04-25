@@ -1,7 +1,5 @@
 package storm.starter.bolt;
 
-import java.util.Map;
-
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
@@ -10,6 +8,8 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
+
+import java.util.Map;
 
 public class TransformBolt_WithAcking extends BaseRichBolt{
 	OutputCollector _collector;
@@ -25,7 +25,7 @@ public class TransformBolt_WithAcking extends BaseRichBolt{
     	Utils.sleep(length);
     	word=word.substring(0,(int)(0.8*word.length()));
       _collector.emit(tuple, new Values(word));
-      //_collector.ack(tuple);
+      _collector.ack(tuple);
     }
 
     @Override

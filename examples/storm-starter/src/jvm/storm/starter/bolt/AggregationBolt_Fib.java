@@ -1,7 +1,5 @@
 package storm.starter.bolt;
 
-import java.util.Map;
-
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
@@ -11,14 +9,14 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
+import java.util.Map;
+
 public class AggregationBolt_Fib extends BaseRichBolt{
 	OutputCollector _collector;
-
     public long fib(int n) {
         if (n <= 1) return n;
         else return fib(n-1) + fib(n-2);
     }
-
 
     @Override
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
@@ -34,7 +32,7 @@ public class AggregationBolt_Fib extends BaseRichBolt{
     	word+=Byte.toString(b);
     	word+=Byte.toString(b);
     	word+=Byte.toString(b);
-        fib(47);
+        fib(20);
       _collector.emit(tuple, new Values(word));
       //_collector.ack(tuple);
     }

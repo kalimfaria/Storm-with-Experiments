@@ -19,6 +19,8 @@ import backtype.storm.utils.Utils;
 public class AggregationBolt extends BaseRichBolt{
 	OutputCollector _collector;
 
+
+
     @Override
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
       _collector = collector;
@@ -33,6 +35,7 @@ public class AggregationBolt extends BaseRichBolt{
     	word+=Byte.toString(b);
     	word+=Byte.toString(b);
     	word+=Byte.toString(b);
+
       _collector.emit(tuple, new Values(word));
       //_collector.ack(tuple);
     }

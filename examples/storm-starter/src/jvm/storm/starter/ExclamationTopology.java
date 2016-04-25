@@ -30,6 +30,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
+import storm.starter.BusyWork.BusyWork;
 
 import java.util.Map;
 
@@ -39,6 +40,7 @@ import java.util.Map;
 public class ExclamationTopology {
 
   public static class ExclamationBolt extends BaseRichBolt {
+
     OutputCollector _collector;
 
     @Override
@@ -48,6 +50,7 @@ public class ExclamationTopology {
 
     @Override
     public void execute(Tuple tuple) {
+      Utils.sleep(10*1000); // ADDED BY FARIA
       _collector.emit(tuple, new Values(tuple.getString(0) + "!!!"));
      // _collector.ack(tuple);
     }
@@ -63,11 +66,11 @@ public class ExclamationTopology {
   public static void main(String[] args) throws Exception {
     TopologyBuilder builder = new TopologyBuilder();
     int parallelism_hint = 10;
-    builder.setSpout("word", new TestWordSpout(), 1 ).setNumTasks(3);
-    builder.setBolt("exclaim1", new ExclamationBolt(), parallelism_hint ).shuffleGrouping("word").setNumTasks(30);
-    builder.setBolt("exclaim2", new ExclamationBolt(), parallelism_hint ).shuffleGrouping("exclaim1").setNumTasks(30);
-    builder.setBolt("exclaim3", new ExclamationBolt(), parallelism_hint ).shuffleGrouping("exclaim2").setNumTasks(30);
-    builder.setBolt("exclaim4", new ExclamationBolt(), parallelism_hint ).shuffleGrouping("exclaim3").setNumTasks(30);
+    builder.setSpout("word", new TestWordSpout(), parallelism_hint ).setNumTasks(100);
+    builder.setBolt("exclaim1", new ExclamationBolt(), parallelism_hint  ).shuffleGrouping("word").setNumTasks(100); //parallelism_hint
+    builder.setBolt("exclaim2", new ExclamationBolt(), parallelism_hint ).shuffleGrouping("exclaim1").setNumTasks(100); //parallelism_hint
+    builder.setBolt("exclaim3", new ExclamationBolt(), parallelism_hint  ).shuffleGrouping("exclaim2").setNumTasks(100); //parallelism_hint
+    builder.setBolt("exclaim4", new ExclamationBolt(), parallelism_hint  ).shuffleGrouping("exclaim3").setNumTasks(100);//parallelism_hint
 
 
     Config conf = new Config();
