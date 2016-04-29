@@ -39,9 +39,11 @@ public class KryoTupleSerializer implements ITupleSerializer {
             
             _kryoOut.clear();
             _kryoOut.writeInt(tuple.getSourceTask(), true);
+          //  _kryoOut.writeLong(tuple.getTimeGenerated(), true);
             _kryoOut.writeInt(_ids.getStreamId(tuple.getSourceComponent(), tuple.getSourceStreamId()), true);
             tuple.getMessageId().serialize(_kryoOut);
             _kryo.serializeInto(tuple.getValues(), _kryoOut);
+
             return _kryoOut.toBytes();
         } catch (IOException e) {
             throw new RuntimeException(e);

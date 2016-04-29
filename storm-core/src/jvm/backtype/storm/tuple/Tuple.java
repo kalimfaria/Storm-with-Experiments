@@ -57,4 +57,13 @@ public interface Tuple extends ITuple{
      * Gets the message id that associated with this tuple.
      */
     public MessageId getMessageId();
+
+    public String getSource() ;
+
+    public void setSource (String source_);
+
+    public void setTimeGenerated (Long time) ;
+
+    public Long getTimeGenerated();
+
 }

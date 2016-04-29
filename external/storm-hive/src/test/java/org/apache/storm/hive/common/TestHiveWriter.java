@@ -163,7 +163,7 @@ public class TestHiveWriter {
                     return new Fields("id", "msg");
                 }
             };
-        return new TupleImpl(topologyContext, new Values(id, msg), 1, "");
+        return new TupleImpl(topologyContext, new Values(id, msg), 1, "");//, System.currentTimeMillis()
     }
 
     private void writeTuples(HiveWriter writer, HiveMapper mapper, int count)

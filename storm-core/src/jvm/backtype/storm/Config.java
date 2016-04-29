@@ -1406,6 +1406,8 @@ public class Config extends HashMap<String, Object> {
     public static final String TOPOLOGY_LATENCY_SLO="topology.latency.slo";
     public static final Object TOPOLOGY_LATENCY_SLO_SCHEMA = ConfigValidation.PositiveNumberValidator; // MUST BE A POSITIVE NUMBER
 
+    public static final String TOPOLOGY_SENSITIVITY ="topology.sensitivity";
+    public static final Object TOPOLOGY_SENSITIVITY_SCHEMA = ConfigValidation.SensitivityValidator;
 
     public static final String STELA_SLO_OBSERVER_INTERVAL = "nimbus.stela.slo.observer.interval";
     public static final Object STELA_SLO_OBSERVER_INTERVAL_SCHEMA = ConfigValidation.IntegerValidator;
@@ -1569,8 +1571,13 @@ public class Config extends HashMap<String, Object> {
     }
 
 
-    public static void setTopologyLatencySlo(Map conf, double slo) {
+    public static void setTopologyLatencySlo(Map conf, double slo)
+    {
         conf.put(Config.TOPOLOGY_LATENCY_SLO, slo);
+    }
+
+    public static void setTopologySensitivity(Map conf, String sensitivity) {
+        conf.put(Config.TOPOLOGY_LOGGING_SENSITIVITY, sensitivity);
     }
 
     public void setTopologySlo(double slo) {
@@ -1580,6 +1587,11 @@ public class Config extends HashMap<String, Object> {
     public void setTopologyLatencySlo(double latency_slo) {
 
         setTopologyLatencySlo(this, latency_slo);
+    }
+
+    public void setTopologySensitivity(String sensitivity) {
+
+        setTopologySensitivity(this, sensitivity);
     }
 
 
@@ -1593,6 +1605,14 @@ public class Config extends HashMap<String, Object> {
 
         return ret;
 
+    }
+
+    public static String getTopologySensitivity(Map conf) {
+        if(!conf.containsKey(Config.TOPOLOGY_SENSITIVITY)) {
+            return new String();
+        } else {
+          return (String) conf.get(Config.TOPOLOGY_SENSITIVITY);
+        }
     }
 
     public static double getTopologyLatencySlo(Map conf) {

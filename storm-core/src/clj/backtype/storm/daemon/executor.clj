@@ -289,10 +289,11 @@
        (:user-timer (:worker executor-data)) 
        interval
        interval
+       ;; (let [start-time (System/currentTimeMillis)]
        (fn []
          (disruptor/publish
           receive-queue
-          [[nil (TupleImpl. worker-context [interval] Constants/SYSTEM_TASK_ID Constants/METRICS_TICK_STREAM_ID)]]))))))
+          [[nil (TupleImpl. worker-context [interval] Constants/SYSTEM_TASK_ID Constants/METRICS_TICK_STREAM_ID )]]))))));)start-time
 
 (defn metrics-tick
   ([executor-data task-data ^TupleImpl tuple overflow-buffer]
@@ -335,11 +336,12 @@
           (:user-timer worker)
           tick-time-secs
           tick-time-secs
+         ; (let [start-time (System/currentTimeMillis)]
           (fn []
             (disruptor/publish
               receive-queue
-              [[nil (TupleImpl. context [tick-time-secs] Constants/SYSTEM_TASK_ID Constants/SYSTEM_TICK_STREAM_ID)]]
-              )))))))
+              [[nil (TupleImpl. context [tick-time-secs] Constants/SYSTEM_TASK_ID Constants/SYSTEM_TICK_STREAM_ID )]];start-time
+              )))))));)
 
 (defn mk-executor [worker executor-id initial-credentials]
   (let [executor-data (mk-executor-data worker executor-id)
@@ -371,12 +373,13 @@
       (get-executor-id [this]
         executor-id )
       (credentials-changed [this creds]
+       ; (let [start-time (System/currentTimeMillis)]
         (let [receive-queue (:receive-queue executor-data)
               context (:worker-context executor-data)]
           (disruptor/publish
             receive-queue
-            [[nil (TupleImpl. context [creds] Constants/SYSTEM_TASK_ID Constants/CREDENTIALS_CHANGED_STREAM_ID)]]
-              )))
+            [[nil (TupleImpl. context [creds] Constants/SYSTEM_TASK_ID Constants/CREDENTIALS_CHANGED_STREAM_ID )]];start-time
+              )));)
       Shutdownable
       (shutdown
         [this]
@@ -513,6 +516,7 @@
         
         (log-message "Opening spout " component-id ":" (keys task-datas))
         (doseq [[task-id task-data] task-datas
+
                 :let [^ISpout spout-obj (:object task-data)
                      tasks-fn (:tasks-fn task-data)
                      send-spout-msg (fn [out-stream-id values message-id out-task-id]
@@ -524,18 +528,21 @@
                                              root-id (if rooted? (MessageId/generateId rand))
                                              out-ids (fast-list-for [t out-tasks] (if rooted? (MessageId/generateId rand)))]
                                          (fast-list-iter [out-task out-tasks id out-ids]
+                                          ; (let [start-time (System/currentTimeMillis)]
                                                          (let [tuple-id (if rooted?
                                                                           (MessageId/makeRootId root-id id)
                                                                           (MessageId/makeUnanchored))
                                                                out-tuple (TupleImpl. worker-context
-                                                                                     values
-                                                                                     task-id
-                                                                                     out-stream-id
-                                                                                     tuple-id)]
+                                                                           values
+                                                                           task-id
+                                                                           out-stream-id
+                                                                        ;   start-time
+                                                                           tuple-id
+                                                                           )]
                                                            (transfer-fn out-task
                                                                         out-tuple
                                                                         overflow-buffer)
-                                                           ))
+                                                           ));)
                                          (if (and rooted?
                                                   (not (.isEmpty out-ids)))
                                            (do

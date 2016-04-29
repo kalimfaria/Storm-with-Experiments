@@ -189,7 +189,7 @@ public class KafkaBoltTest {
                 return new Fields("key", "message");
             }
         };
-        return new TupleImpl(topologyContext, new Values(key, message), 1, "");
+        return new TupleImpl(topologyContext, new Values(key, message), 1, ""); //, System.currentTimeMillis()
     }
 
     private Tuple generateTestTuple(Object message) {
@@ -200,7 +200,7 @@ public class KafkaBoltTest {
                 return new Fields("message");
             }
         };
-        return new TupleImpl(topologyContext, new Values(message), 1, "");
+        return new TupleImpl(topologyContext, new Values(message), 1, ""); //, System.currentTimeMillis()
     }
 
     private Tuple mockTickTuple() {

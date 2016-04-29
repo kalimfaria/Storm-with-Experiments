@@ -624,6 +624,7 @@
    :stream Utils/DEFAULT_STREAM_ID
    :component "component"
    :fields nil]
+  (let [start-time (System/currentTimeMillis)]
   (let [fields (or fields
                    (->> (iterate inc 1)
                         (take (count values))
@@ -648,7 +649,7 @@
                   (HashMap.)
                   (HashMap.)
                   (atom false))]
-    (TupleImpl. context values 1 stream)))
+    (TupleImpl. context values 1 stream start-time))))
 
 (defmacro with-timeout
   [millis unit & body]

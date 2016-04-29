@@ -254,6 +254,20 @@ public class ConfigValidation {
         }
     };
 
+    public static Object SensitivityValidator = new FieldValidator() {
+        @Override
+        public void validateField(String name, Object o) throws IllegalArgumentException {
+            if (o == null) {
+                // A null value is acceptable.
+                return;
+            }
+            if(o.toString().equals("throughput") || o.toString().equals("latency")) {
+                return;
+            }
+            throw new IllegalArgumentException("Field " + name + " must either be 'throughput' or 'latency'");
+        }
+    };
+
     /**
      * Validates a power of 2.
      */

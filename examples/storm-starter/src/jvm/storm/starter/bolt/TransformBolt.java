@@ -1,5 +1,6 @@
 package storm.starter.bolt;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import storm.starter.ExclamationTopology.ExclamationBolt;
@@ -25,17 +26,31 @@ public class TransformBolt extends BaseRichBolt{
     }
     @Override
     public void execute(Tuple tuple) {
-    	String word = tuple.getString(0);
-    	Integer length=word.length();
-    	Utils.sleep(length);
-    	word=word.substring(0,(int)(0.8*word.length()));
-      _collector.emit(tuple, new Values(word));
+
+    	//String word = tuple.getString(0);
+    	//Integer length=word.length();
+    	//Utils.sleep(length);
+    	//word=word.substring(0,(int)(0.8*word.length()));
+
+        String word = "useless";
+        String spout = "no";
+        Long time = -1l;
+        if (tuple.contains("word"))
+            word = tuple.getStringByField("word");
+        if (tuple.contains("spout"))
+            spout = tuple.getStringByField("spout");
+        if (tuple.contains("time"))
+            time = tuple.getLongByField("time");
+
+
+      _collector.emit(tuple, new Values(word, spout, time));//new Values(word));
       //_collector.ack(tuple);
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-      declarer.declare(new Fields("word"));
+        declarer.declare(new Fields("word", "spout", "time"));
+     // declarer.declare(new Fields("word"));
     }
 }
 

@@ -28,18 +28,29 @@ public class FilterBolt extends BaseRichBolt{
     }
     @Override
     public void execute(Tuple tuple) {
-    	String word = tuple.getString(0);
-    	Integer length=word.length();
-    	Utils.sleep(length);
+    	//String word = tuple.getString(0);
+    //	Integer length= word.length();
+    //	Utils.sleep(length);
+        String word = "useless";
+        String spout = "no";
+        Long time = -1l;
+        if (tuple.contains("word"))
+            word = tuple.getStringByField("word");
+        if (tuple.contains("spout"))
+            spout = tuple.getStringByField("spout");
+        if (tuple.contains("time"))
+            time = tuple.getLongByField("time");
     	if(_rand.nextDouble()<0.8){
-    		_collector.emit(tuple, new Values(tuple.getString(0)));
+           // _collector.emit(tuple, new Values(word));
+    		_collector.emit(tuple, new Values(word, spout, time));
     	    //_collector.ack(tuple);
     	}
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-      declarer.declare(new Fields("word"));
+      //declarer.declare(new Fields("word"));
+        declarer.declare(new Fields("word", "spout", "time"));
     }
 }
 

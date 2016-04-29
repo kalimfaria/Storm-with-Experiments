@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 package backtype.storm.tuple;
-/// ADD THE UTC TIME :O
+
 import backtype.storm.generated.GlobalStreamId;
 import backtype.storm.task.GeneralTopologyContext;
 import backtype.storm.utils.IndifferentAccessMap;
@@ -41,13 +41,16 @@ public class TupleImpl extends IndifferentAccessMap implements Seqable, Indexed,
     private GeneralTopologyContext context;
     private MessageId id;
     private IPersistentMap _meta = null;
+    private String source;
+    private long timeGenerated;
     
-    public TupleImpl(GeneralTopologyContext context, List<Object> values, int taskId, String streamId, MessageId id) {
+    public TupleImpl(GeneralTopologyContext context, List<Object> values, int taskId, String streamId,  MessageId id) { //long time,
         this.values = values;
         this.taskId = taskId;
         this.streamId = streamId;
         this.id = id;
         this.context = context;
+      //  this.timeGenerated = time;
         
         String componentId = context.getComponentId(taskId);
         Fields schema = context.getComponentOutputFields(componentId, streamId);
@@ -59,10 +62,13 @@ public class TupleImpl extends IndifferentAccessMap implements Seqable, Indexed,
         }
     }
 
+ //   public TupleImpl(GeneralTopologyContext context, List<Object> values, int taskId, String streamId, long time) {
+ //       this(context, values, taskId, streamId, time, MessageId.makeUnanchored());
+ //   }
+
     public TupleImpl(GeneralTopologyContext context, List<Object> values, int taskId, String streamId) {
-        this(context, values, taskId, streamId, MessageId.makeUnanchored());
-    }    
-    
+        this(context, values, taskId, streamId, MessageId.makeUnanchored());}
+
     Long _processSampleStartTime = null;
     Long _executeSampleStartTime = null;
     
@@ -90,6 +96,22 @@ public class TupleImpl extends IndifferentAccessMap implements Seqable, Indexed,
     
     public long getAckVal() {
         return _outAckVal;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source_) {
+        this.source = source_;
+    }
+
+    public Long getTimeGenerated() {
+        return timeGenerated;
+    }
+
+    public void setTimeGenerated(Long time) {
+        this.timeGenerated = time;
     }
 
     public int size() {
