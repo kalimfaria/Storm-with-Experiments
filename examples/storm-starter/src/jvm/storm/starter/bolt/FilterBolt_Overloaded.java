@@ -1,25 +1,26 @@
 package storm.starter.bolt;
 
-import java.util.Map;
-import java.util.Random;
-
-import storm.starter.ExclamationTopology.ExclamationBolt;
-import backtype.storm.Config;
-import backtype.storm.StormSubmitter;
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
-import backtype.storm.testing.TestWordSpout;
 import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
-public class FilterBolt extends BaseRichBolt{
+import java.util.Map;
+import java.util.Random;
+
+public class FilterBolt_Overloaded extends BaseRichBolt{
 	OutputCollector _collector;
 	Random _rand;
+    long time_;
+
+    public FilterBolt_Overloaded()
+    {
+        time_ = System.currentTimeMillis();
+    }
 	
     @Override
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
@@ -30,7 +31,8 @@ public class FilterBolt extends BaseRichBolt{
     public void execute(Tuple tuple) {
     	//String word = tuple.getString(0);
     //	Integer length= word.length();
-    //	Utils.sleep(length);
+    //	Utils.sleep(10); // should sleep for a hundred milliseconds
+
         String word = "useless";
         String spout = "no";
         Long time = -1l;
@@ -40,11 +42,23 @@ public class FilterBolt extends BaseRichBolt{
             spout = tuple.getStringByField("spout");
         if (tuple.contains("time"))
             time = tuple.getLongByField("time");
-    	if(_rand.nextDouble()<0.8){
+
+        if ((System.currentTimeMillis() - time_)/1000 < 10*60) {
+            _collector.emit(tuple, new Values(word, spout, time));
+        }
+        else {
+            for (int i = 0; i < 30; i++) {
+                _collector.emit(tuple, new Values(word, spout, time));
+                System.out.println("Do more!");
+            }
+        }
+
+    /*	if(_rand.nextDouble()<0.8){
            // _collector.emit(tuple, new Values(word));
     		_collector.emit(tuple, new Values(word, spout, time));
     	    _collector.ack(tuple);
     	}
+    	*/
     }
 
     @Override

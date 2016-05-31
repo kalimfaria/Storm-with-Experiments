@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import backtype.storm.utils.Utils;
 import storm.starter.BusyWork.BusyWork;
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
@@ -22,12 +23,15 @@ public class TestBolt extends BaseRichBolt {
 
     String bolt_name;
     File output_file;
-    HashMap<String, Long> spout_latency;
+    HashMap<String, Double> spout_latency;
     int counter;
+    int BATCH_SIZE = 40;
     String topology_name;
+    Long start_time;
 
     public TestBolt(String bolt_name) {
         this.bolt_name = bolt_name;
+        this.start_time = System.currentTimeMillis();
     }
 
     public TestBolt() {
@@ -37,18 +41,21 @@ public class TestBolt extends BaseRichBolt {
     @Override
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
         _collector = collector;
-        String name = "/users/kalim2/output/output-time" + System.currentTimeMillis() + ".log";
+        String name = "/users/kalim2/output/output-time" + start_time + context.getThisTaskId() + ".log";
         output_file = new File(name);
-        counter = 0;
-        spout_latency = new HashMap<String, Long>();
-        topology_name = context.getStormId();
 
+        counter = 0;
+        spout_latency = new HashMap<String, Double>();
+        topology_name = context.getStormId();
     }
 
     @Override
     public void execute(Tuple tuple) {
         BusyWork.doWork(10000);
 
+    /*    if (bolt_name.contains("overloaded"))
+            Utils.sleep(10);
+*/
         counter = (counter + 1) % 20;
         String word = "useless";
         String spout = "no";
@@ -62,18 +69,18 @@ public class TestBolt extends BaseRichBolt {
 
         if (bolt_name.contains("sink")) {
             if (!spout_latency.containsKey(spout)) {
-                spout_latency.put(spout, System.currentTimeMillis() - time);
+                spout_latency.put(spout, (double)(System.currentTimeMillis() - time));
             } else {
-                long temp_time = spout_latency.get(spout); // get old
+                double temp_time = spout_latency.get(spout); // get old
                 if (counter == 0) {
-                    spout_latency.put(spout, System.currentTimeMillis() - time);
+                    spout_latency.put(spout, (double)(System.currentTimeMillis() - time));
                 } else {
                     temp_time = temp_time * counter;
                     temp_time += (System.currentTimeMillis() - time);
                     spout_latency.put(spout, temp_time / (counter + 1));
                 }
             }
-            if (counter == 0) {
+            if (counter == 19) { // so place after every 20 values
                 StringBuffer output = new StringBuffer();
                 for (String s : spout_latency.keySet())
                     output.append(topology_name + "," + s + "," + bolt_name + "," + spout_latency.get(s) + "\n");

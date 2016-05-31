@@ -25,20 +25,23 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class RandomLogSpout extends BaseRichSpout {
+public class RandomLogSpout_Overloaded extends BaseRichSpout {
   SpoutOutputCollector _collector;
   Random _rand;
+  Long time;
 
 
+  public RandomLogSpout_Overloaded()
+  {
+    time = System.currentTimeMillis();
+  }
   @Override
   public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
     _collector = collector;
     _rand = new Random();
-
   }
 
   @Override
@@ -56,7 +59,16 @@ public class RandomLogSpout extends BaseRichSpout {
    // values.put("start-time", System.currentTimeMillis());
    // v.add(values);
 
+
+    if ((System.currentTimeMillis() - time)/1000 < 15*60) {
       _collector.emit(new Values(sentence, "spout_head", System.currentTimeMillis()));//new Values(sentence));
+    }
+    else {
+      for (int i = 0; i < 20; i++) {
+        _collector.emit(new Values(sentence, "spout_head", System.currentTimeMillis()));//new Values(sentence));
+        System.out.println("Do more!");
+      }
+    }
 
   }
 

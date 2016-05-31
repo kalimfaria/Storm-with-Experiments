@@ -1577,7 +1577,7 @@ public class Config extends HashMap<String, Object> {
     }
 
     public static void setTopologySensitivity(Map conf, String sensitivity) {
-        conf.put(Config.TOPOLOGY_LOGGING_SENSITIVITY, sensitivity);
+        conf.put(Config.TOPOLOGY_SENSITIVITY, sensitivity);
     }
 
     public void setTopologySlo(double slo) {
