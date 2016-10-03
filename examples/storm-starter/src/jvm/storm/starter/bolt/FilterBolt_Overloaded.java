@@ -43,15 +43,15 @@ public class FilterBolt_Overloaded extends BaseRichBolt{
         if (tuple.contains("time"))
             time = tuple.getLongByField("time");
 
-        if ((System.currentTimeMillis() - time_)/1000 < 10*60) {
+     /*   if ((System.currentTimeMillis() - time_)/1000 < 10*60) {
             _collector.emit(tuple, new Values(word, spout, time));
         }
-        else {
+        else {*/
             for (int i = 0; i < 30; i++) {
                 _collector.emit(tuple, new Values(word, spout, time));
                 System.out.println("Do more!");
             }
-        }
+       // }
 
     /*	if(_rand.nextDouble()<0.8){
            // _collector.emit(tuple, new Values(word));

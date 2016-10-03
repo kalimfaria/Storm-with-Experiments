@@ -13,11 +13,12 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
-(ns backtype.storm.scheduler.EvenScheduler
+(ns backtype.storm.scheduler.SimpleScheduler
   (:use [backtype.storm util log config])
   (:require [clojure.set :as set])
   (:import [backtype.storm.scheduler IScheduler Topologies
-            Cluster TopologyDetails WorkerSlot ExecutorDetails])
+            Cluster TopologyDetails WorkerSlot ExecutorDetails]
+           [clojure.lang PersistentArrayMap])
   (:gen-class
     :implements [backtype.storm.scheduler.IScheduler]))
 
@@ -75,6 +76,9 @@
       )
     (when (empty? reassignment)
       (log-message "Topology-id " (pr-str topology-id))
+      (log-message "Type of reassignment " (pr-str (type reassignment)))
+      (log-message "Type of cluster-exec-to-slot " (pr-str (type cluster-exec-to-slot)))
+      (log-message "Type of casted cluster-exec-to-slot "(pr-str (type (PersistentArrayMap/create cluster-exec-to-slot))))
       (log-message "Printing (set (apply concat (vals alive-assigned))) in topology " (pr-str (set (apply concat (vals alive-assigned)))))
       (log-message "Printing all-executors in topology " (pr-str all-executors))
       (log-message "Printing reassign-executors " (pr-str reassign-executors))
@@ -82,7 +86,8 @@
       (log-message "Printing cluster-exec-to-slot " (pr-str cluster-exec-to-slot) )
     ;;  (log-message "Printing cluster-executors " (pr-str cluster-executors))
       (log-message "Reassignment is empty inside the scheduler"))
-    reassignment))
+   ;; reassignment))
+    (PersistentArrayMap/create cluster-exec-to-slot)))
 
 (defn schedule-topologies-evenly [^Topologies topologies ^Cluster cluster]
   (log-message "in schedule-topologies-evenly")
@@ -107,11 +112,15 @@
                   new-assignment (schedule-topology topology cluster)
                   node+port->executors (reverse-map new-assignment)]
              ]
+      (doseq [[node+port executors] node+port->executors]
+        (log-message "node + port " (pr-str node+port) " executors " (pr-str executors)))
       (doseq [[node+port executors] node+port->executors
-              :let [^WorkerSlot slot (WorkerSlot. (first node+port) (last node+port))
-                    executors (for [[start-task end-task] executors]
-                                (ExecutorDetails. start-task end-task))]]
-        (.assign cluster slot topology-id executors))
+              ;;:let [^WorkerSlot slot (WorkerSlot. (first node+port) (last node+port))
+                 ;;   executors (for [[start-task end-task] executors]
+                   ;;             (ExecutorDetails. start-task end-task))]
+              ]
+        (log-message "node + port " (pr-str node+port) " executors " (pr-str executors))
+        (.assign cluster node+port topology-id executors))
       (log-message "Printing for topology " topology-id " cluster-exec-to-slot from schedule-topologies-evenly " (pr-str cluster-exec-to-slot))
       )
      )

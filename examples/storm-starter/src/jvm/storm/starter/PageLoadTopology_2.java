@@ -24,11 +24,12 @@ public class PageLoadTopology_2 {
 		builder.setBolt("bolt_join", new TestBolt(), paralellism).shuffleGrouping("bolt_filter").setNumTasks(20);;
 		builder.setBolt("bolt_filter_2", new FilterBolt(), paralellism).shuffleGrouping("bolt_join").setNumTasks(20);;
 		builder.setBolt("bolt_aggregate", new AggregationBolt(), paralellism).shuffleGrouping("bolt_filter_2").setNumTasks(20);;
-		builder.setBolt("bolt_output_sink", new TestBolt(),paralellism).shuffleGrouping("bolt_aggregate").setNumTasks(20);;
+		builder.setBolt("bolt_output_sink", new TestBolt("bolt_output_sink"),paralellism).shuffleGrouping("bolt_aggregate").setNumTasks(20);;
 
 
 		Config conf = new Config();
 		conf.setTopologySlo(0.2);
+		conf.setTopologySensitivity("throughput");
 		conf.setDebug(true);
 
 		conf.setNumAckers(0);

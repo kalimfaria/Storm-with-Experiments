@@ -154,7 +154,9 @@
       storm-id
       (-> {:topology-action-options nil}
         (assoc-non-nil :component->executors (:component->executors rebalance-options))
-        (assoc-non-nil :num-workers (:num-workers rebalance-options)))))
+        (assoc-non-nil :num-workers (:num-workers rebalance-options)))
+      )
+    )
   (mk-assignments nimbus :scratch-topology-id storm-id))
 
 (defn state-transitions [nimbus storm-id status storm-base]
@@ -606,12 +608,16 @@
         supervisors (read-all-supervisor-details nimbus all-scheduling-slots supervisor->dead-ports)
         cluster (Cluster. (:inimbus nimbus) supervisors topology->scheduler-assignment)
 
+
         ;; call scheduler.schedule to schedule all the topologies
         ;; the new assignments for all the topologies are in the cluster object.
         _ (.schedule (:scheduler nimbus) topologies cluster)
         new-scheduler-assignments (.getAssignments cluster)
         ;; add more information to convert SchedulerAssignment to Assignment
         new-topology->executor->node+port (compute-topology->executor->node+port new-scheduler-assignments)]
+    (log-message "Printing topology->scheduler-assignment from zookeeper " (pr-str topology->scheduler-assignment) " ") ;; TODO Printing doesn't work
+    (log-message "Printing new scheduler assignments  " (pr-str new-scheduler-assignments) " slots")
+    (log-message "Printing new-topology->executor->node+port  " (pr-str new-topology->executor->node+port) " slots")
     (reset! (:id->sched-status nimbus) (.getStatusMap cluster))
     ;; print some useful information.
     (doseq [[topology-id executor->node+port] new-topology->executor->node+port
@@ -626,9 +632,18 @@
         (let [new-slots-cnt (count (set (vals executor->node+port)))
               reassign-executors (keys reassignment)]
           (log-message "Reassigning " topology-id " to " new-slots-cnt " slots")
-          (log-message "Reassign executors: " (vec reassign-executors)))))
+          (log-message "Reassign executors: " (vec reassign-executors)))
+        (let [cluster-assigment (.getAssignmentById cluster topology-id)
+              cluster-exec-to-slot (if cluster-assigment
+                                     (.getExecutors cluster-assigment)
+                                     {})]
+          (log-message "Printing cluster-exec-to-slot from compute-new-topology->executor->node+port" (pr-str cluster-exec-to-slot)))
+        )
+      (when (empty? reassignment)
+        (log-message "Reassignment is empty") ))
 
-    new-topology->executor->node+port))
+    new-topology->executor->node+port)
+  )
 
 (defn changed-executors [executor->node+port new-executor->node+port]
   (let [executor->node+port (if executor->node+port (sort executor->node+port) nil)
@@ -665,6 +680,7 @@
 ;; only keep existing slots that satisfy one of those slots. for rest, reassign them across remaining slots
 ;; edge case for slots with no executor timeout but with supervisor timeout... just treat these as valid slots that can be reassigned to. worst comes to worse the executor will timeout and won't assign here next time around
 (defnk mk-assignments [nimbus :scratch-topology-id nil]
+  (log-message "In mk-assignments")
   (let [conf (:conf nimbus)
         storm-cluster-state (:storm-cluster-state nimbus)
         ^INimbus inimbus (:inimbus nimbus)
@@ -723,7 +739,7 @@
             :let [existing-assignment (get existing-assignments topology-id)
                   topology-details (.getById topologies topology-id)]]
       (if (= existing-assignment assignment)
-        (log-debug "Assignment for " topology-id " hasn't changed")
+        (log-message "Assignment for " topology-id " hasn't changed")
         (do
           (log-message "Setting new assignment for topology id " topology-id ": " (pr-str assignment))
           (.set-assignment! storm-cluster-state topology-id assignment)
@@ -1420,3 +1436,55 @@
 (defn -main []
   (setup-default-uncaught-exception-handler)
   (-launch (standalone-nimbus)))
+
+
+;(log-message "In compute-new-topology->executor->node+port ")
+;(let [conf (:conf nimbus)
+;      storm-cluster-state (:storm-cluster-state nimbus)
+;      topology->executors (compute-topology->executors nimbus (keys existing-assignments))
+;      topology->alive-executors (compute-topology->alive-executors nimbus
+;                                  existing-assignments
+;                                  topologies
+;                                  topology->executors
+;                                  scratch-topology-id)
+;      supervisor->dead-ports (compute-supervisor->dead-ports nimbus
+;                               existing-assignments
+;                               topology->executors
+;                               topology->alive-executors)
+;      topology->scheduler-assignment (compute-topology->scheduler-assignment nimbus
+;                                       existing-assignments
+;                                       topology->alive-executors)
+;      missing-assignment-topologies (->> topologies
+;                                      .getTopologies
+;                                      (map (memfn getId))
+;                                      (filter (fn [t]
+;                                                (let [alle (get topology->executors t)
+;                                                      alivee (get topology->alive-executors t)]
+;                                                  (or (empty? alle)
+;                                                    (not= alle alivee)
+;                                                    (< (-> topology->scheduler-assignment
+;                                                         (get t)
+;                                                         num-used-workers )
+;                                                      (-> topologies (.getById t) .getNumWorkers)
+;                                                      ))
+;                                                  ))))
+;      all-scheduling-slots (->> (all-scheduling-slots nimbus topologies missing-assignment-topologies)
+;                             (map (fn [[node-id port]] {node-id #{port}}))
+;                             (apply merge-with set/union))
+;      supervisors (read-all-supervisor-details nimbus all-scheduling-slots supervisor->dead-ports)
+;      cluster (Cluster. (:inimbus nimbus) supervisors topology->scheduler-assignment)
+;      ]
+;  (doseq [^TopologyDetails topology topologies
+;          :let [topology-id (.getId topology)
+;                cluster-assigment (.getAssignmentById cluster topology-id)
+;                cluster-exec-to-slot (if cluster-assigment
+;                                       (.getExecutors cluster-assigment)
+;                                       {})]
+;          ]
+;    (log-message "Printing FIRST cluster-exec-to-slot from compute-new-topology->executor->node+port" (pr-str cluster-exec-to-slot)))
+;
+;  (log-message "Printing FIRST topology->scheduler-assignment from zookeeper " (pr-str topology->scheduler-assignment) " ") ;; TODO Printing doesn't work
+;  (log-message "Printing FIRST new scheduler assignments  " (pr-str new-scheduler-assignments) " slots")
+;  (log-message "Printing FIRST new-topology->executor->node+port  " (pr-str new-topology->executor->node+port) " slots")
+;  )
+;

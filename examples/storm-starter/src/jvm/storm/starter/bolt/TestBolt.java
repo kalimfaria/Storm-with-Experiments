@@ -41,7 +41,7 @@ public class TestBolt extends BaseRichBolt {
     @Override
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
         _collector = collector;
-        String name = "/users/kalim2/output/output-time" + start_time + context.getThisTaskId() + ".log";
+        String name = "/users/kalim2/output/output-time-" + context.getStormId() + "-" + context.getThisTaskId() + ".log";
         output_file = new File(name);
 
         counter = 0;
@@ -53,9 +53,6 @@ public class TestBolt extends BaseRichBolt {
     public void execute(Tuple tuple) {
         BusyWork.doWork(10000);
 
-    /*    if (bolt_name.contains("overloaded"))
-            Utils.sleep(10);
-*/
         counter = (counter + 1) % 20;
         String word = "useless";
         String spout = "no";
@@ -83,7 +80,7 @@ public class TestBolt extends BaseRichBolt {
             if (counter == 19) { // so place after every 20 values
                 StringBuffer output = new StringBuffer();
                 for (String s : spout_latency.keySet())
-                    output.append(topology_name + "," + s + "," + bolt_name + "," + spout_latency.get(s) + "\n");
+                    output.append(topology_name + "," + s + "," + bolt_name + "," + spout_latency.get(s) + "," + System.currentTimeMillis() + "\n");
                 writeToFile(output_file, output.toString()); //+ time + ","
             }
         }
@@ -104,7 +101,6 @@ public class TestBolt extends BaseRichBolt {
             while (lock == null) {
                 lock = channel.tryLock();
             }
-            //FileWriter fileWriter = new FileWriter(file, true);
             FileWriter fileWriter = new FileWriter(file, false);
             BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
             bufferWriter.append(data);

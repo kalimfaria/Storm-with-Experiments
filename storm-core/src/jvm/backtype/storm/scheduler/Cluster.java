@@ -17,6 +17,9 @@
  */
 package backtype.storm.scheduler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,6 +50,48 @@ public class Cluster {
     
     private Set<String> blackListedHosts = new HashSet<String>();
     private INimbus inimbus;
+    private static final Logger LOG = LoggerFactory.getLogger(Cluster.class);
+
+    public Cluster (Cluster c) {
+        this.inimbus = c.inimbus;
+        LOG.info("Assigned nimbus");
+        this.supervisors = new HashMap<String, SupervisorDetails>();
+        LOG.info("Initialized supervisors");
+        for (Map.Entry<String, SupervisorDetails> entry : c.supervisors.entrySet()){
+            this.supervisors.put(entry.getKey(),
+                    new SupervisorDetails(entry.getValue().getId(),
+                            entry.getValue().getHost(), entry.getValue().getSchedulerMeta(),
+                            new HashSet<Number>(entry.getValue().getAllPorts())));
+        }
+        LOG.info("Put all supervisors");
+        this.assignments = new HashMap<String, SchedulerAssignmentImpl>();
+        LOG.info("Initialized assignments");
+        for (Map.Entry<String, SchedulerAssignmentImpl> entry : c.assignments.entrySet()){
+            HashMap <ExecutorDetails, WorkerSlot> temp = new HashMap<>();
+            for (Map.Entry<ExecutorDetails, WorkerSlot> e : entry.getValue().getExecutorToSlot().entrySet()) {
+                temp.put(new ExecutorDetails(e.getKey().getStartTask(), e.getKey().getEndTask()),
+                        new WorkerSlot(e.getValue().getNodeId(), e.getValue().getPort()));
+            }
+            this.assignments.put(entry.getKey(), new SchedulerAssignmentImpl(entry.getValue().getTopologyId(), temp));
+        }
+        LOG.info("Put all assignments");
+        this.status = new HashMap<String, String>();
+        LOG.info("Initialized status");
+        this.hostToId = new HashMap<String, List<String>>();
+        LOG.info("host to id");
+        for (String nodeId : c.supervisors.keySet()) {
+            SupervisorDetails supervisor = c.supervisors.get(nodeId);
+            LOG.info("Supervisor Details init");
+            String host = supervisor.getHost();
+            LOG.info("Supervisor host");
+            if (!this.hostToId.containsKey(host)) {
+                LOG.info("Contains key");
+                this.hostToId.put(host, new ArrayList<String>());
+            }
+            LOG.info("host to id");
+            this.hostToId.get(host).add(nodeId);
+        }
+    }
 
     public Cluster(INimbus nimbus, Map<String, SupervisorDetails> supervisors, Map<String, SchedulerAssignmentImpl> assignments){
         this.inimbus = nimbus;

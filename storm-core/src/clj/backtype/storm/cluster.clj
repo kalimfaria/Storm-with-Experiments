@@ -417,7 +417,9 @@
                         (merge new-elems)
                         thriftify-storm-base
                         Utils/serialize)
-                    acls)))
+                    acls)
+          (log-message "From update storm new-elems " (pr-str new-elems)  " old executors" (pr-str executors)))
+        )
 
       (storm-base
         [this storm-id callback]

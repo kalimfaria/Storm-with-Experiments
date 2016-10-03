@@ -342,6 +342,14 @@ def henge_rebalance(*args):
         jvmtype="-client",
         extrajars=[USER_CONF_DIR, STORM_BIN_DIR])
 
+def nice_rebalance(*args):
+    print args
+    exec_storm_class(
+        "backtype.storm.command.nice_rebalance",
+        args= args,
+        jvmtype="-client",
+        extrajars=[USER_CONF_DIR, STORM_BIN_DIR])
+
 #    topology_args = []
 #    i = 0
 #    for x in args:
@@ -579,7 +587,7 @@ COMMANDS = {"jar": jar, "kill": kill, "shell": shell, "nimbus": nimbus, "ui": ui
             "drpc": drpc, "supervisor": supervisor, "localconfvalue": print_localconfvalue,
             "remoteconfvalue": print_remoteconfvalue, "repl": repl, "classpath": print_classpath,
             "activate": activate, "deactivate": deactivate, "rebalance": rebalance, "help": print_usage, "henge-rebalance" : henge_rebalance,
-            "list": listtopos, "dev-zookeeper": dev_zookeeper, "version": version, "monitor": monitor,
+            "nice-rebalance" : nice_rebalance, "list": listtopos, "dev-zookeeper": dev_zookeeper, "version": version, "monitor": monitor,
             "upload-credentials": upload_credentials}
 
 def parse_config(config_list):

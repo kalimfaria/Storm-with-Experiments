@@ -25,7 +25,7 @@ public class AggregationBolt extends BaseRichBolt{
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
       _collector = collector;
     }
-    @Override
+ /*   @Override
     public void execute(Tuple tuple) {
     	String word = tuple.getString(0);
     	Integer length=word.length();
@@ -43,6 +43,37 @@ public class AggregationBolt extends BaseRichBolt{
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
       declarer.declare(new Fields("word"));
+    } */
+ @Override
+ public void execute(Tuple tuple) {
+
+     String word = tuple.getString(0);
+     Integer length=word.length();
+     Utils.sleep(length);
+     byte b=0x10;
+     word+=Byte.toString(b);
+     word+=Byte.toString(b);
+     word+=Byte.toString(b);
+     word+=Byte.toString(b);
+
+     String spout = "no";
+     Long time = -1l;
+     if (tuple.contains("word"))
+         word = tuple.getStringByField("word");
+     if (tuple.contains("spout"))
+         spout = tuple.getStringByField("spout");
+     if (tuple.contains("time"))
+         time = tuple.getLongByField("time");
+
+
+     _collector.emit(tuple, new Values(word, spout, time));//new Values(word));
+     _collector.ack(tuple);
+ }
+
+    @Override
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+        declarer.declare(new Fields("word", "spout", "time"));
+        // declarer.declare(new Fields("word"));
     }
 }
 
