@@ -1403,6 +1403,9 @@ public class Config extends HashMap<String, Object> {
     public static final String TOPOLOGY_SLO="topology.slo";
     public static final Object TOPOLOGY_SLO_SCHEMA = ConfigValidation.SLOValidator;
 
+    public static final String TOPOLOGY_UTILITY="topology.utility";
+    public static final Object TOPOLOGY_UTILITY_SCHEMA = ConfigValidation.PositiveNumberValidator;
+
     public static final String TOPOLOGY_LATENCY_SLO="topology.latency.slo";
     public static final Object TOPOLOGY_LATENCY_SLO_SCHEMA = ConfigValidation.PositiveNumberValidator; // MUST BE A POSITIVE NUMBER
 
@@ -1570,6 +1573,14 @@ public class Config extends HashMap<String, Object> {
         conf.put(Config.TOPOLOGY_SLO, slo);
     }
 
+    public static void setTopologyUtility(Map conf, double utility) {
+        conf.put(Config.TOPOLOGY_UTILITY, utility);
+    }
+
+
+    public void setTopologyUtility(double utility) {
+        setTopologyUtility(this, utility);
+    }
 
     public static void setTopologyLatencySlo(Map conf, double slo)
     {
