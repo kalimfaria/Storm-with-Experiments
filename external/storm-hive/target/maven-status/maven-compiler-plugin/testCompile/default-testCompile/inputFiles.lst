@@ -1,0 +1,6 @@
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hive/src/test/java/org/apache/storm/hive/trident/TridentHiveTopology.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hive/src/test/java/org/apache/storm/hive/bolt/HiveTopologyPartitioned.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hive/src/test/java/org/apache/storm/hive/bolt/TestHiveBolt.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hive/src/test/java/org/apache/storm/hive/bolt/HiveTopology.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hive/src/test/java/org/apache/storm/hive/common/TestHiveWriter.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hive/src/test/java/org/apache/storm/hive/bolt/HiveSetupUtil.java

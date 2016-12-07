@@ -59,6 +59,7 @@
                                 (repeat-seq (count reassign-executors) reassign-slots)))]
     (when-not (empty? reassignment)
       (log-message "Available slots: " (pr-str available-slots))
+      (log-message "Topology: " (pr-str topology-id) " reassignment: " (pr-str))
       )
     reassignment))
 

@@ -41,7 +41,7 @@ public class TestBolt extends BaseRichBolt {
     @Override
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
         _collector = collector;
-        String name = "/users/kalim2/output/output-time" + start_time + context.getThisTaskId() + ".log";
+        String name = "/proj/Stella/logs/output-time" + start_time + context.getThisTaskId() + ".log";
         output_file = new File(name);
 
         counter = 0;
@@ -84,7 +84,7 @@ public class TestBolt extends BaseRichBolt {
                 StringBuffer output = new StringBuffer();
                 for (String s : spout_latency.keySet())
                     output.append(topology_name + "," + s + "," + bolt_name + "," + spout_latency.get(s) + "\n");
-                writeToFile(output_file, output.toString()); //+ time + ","
+                //writeToFile(output_file, output.toString()); //+ time + ","
             }
         }
         _collector.emit(tuple, new Values(word, spout, time)); //tuple.getString(0)

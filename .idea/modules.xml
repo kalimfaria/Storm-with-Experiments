@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/external/flux/flux.iml" filepath="$PROJECT_DIR$/external/flux/flux.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/flux/flux-core/flux-core.iml" filepath="$PROJECT_DIR$/external/flux/flux-core/flux-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/flux/flux-examples/flux-examples.iml" filepath="$PROJECT_DIR$/external/flux/flux-examples/flux-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/flux/flux-wrappers/flux-wrappers.iml" filepath="$PROJECT_DIR$/external/flux/flux-wrappers/flux-wrappers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/storm-buildtools/maven-shade-clojure-transformer/maven-shade-clojure-transformer.iml" filepath="$PROJECT_DIR$/storm-buildtools/maven-shade-clojure-transformer/maven-shade-clojure-transformer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/storm-multilang/javascript/multilang-javascript.iml" filepath="$PROJECT_DIR$/storm-multilang/javascript/multilang-javascript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/storm-multilang/python/multilang-python.iml" filepath="$PROJECT_DIR$/storm-multilang/python/multilang-python.iml" />
+      <module fileurl="file://$PROJECT_DIR$/storm-multilang/ruby/multilang-ruby.iml" filepath="$PROJECT_DIR$/storm-multilang/ruby/multilang-ruby.iml" />
+      <module fileurl="file://$PROJECT_DIR$/storm.iml" filepath="$PROJECT_DIR$/storm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/storm-core/storm-core.iml" filepath="$PROJECT_DIR$/storm-core/storm-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/storm-eventhubs/storm-eventhubs.iml" filepath="$PROJECT_DIR$/external/storm-eventhubs/storm-eventhubs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/storm-hbase/storm-hbase.iml" filepath="$PROJECT_DIR$/external/storm-hbase/storm-hbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/storm-hdfs/storm-hdfs.iml" filepath="$PROJECT_DIR$/external/storm-hdfs/storm-hdfs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/storm-hive/storm-hive.iml" filepath="$PROJECT_DIR$/external/storm-hive/storm-hive.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/storm-jdbc/storm-jdbc.iml" filepath="$PROJECT_DIR$/external/storm-jdbc/storm-jdbc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/storm-kafka/storm-kafka.iml" filepath="$PROJECT_DIR$/external/storm-kafka/storm-kafka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/storm-buildtools/storm-maven-plugins/storm-maven-plugins.iml" filepath="$PROJECT_DIR$/storm-buildtools/storm-maven-plugins/storm-maven-plugins.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/storm-redis/storm-redis.iml" filepath="$PROJECT_DIR$/external/storm-redis/storm-redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/storm-starter/storm-starter.iml" filepath="$PROJECT_DIR$/examples/storm-starter/storm-starter.iml" />
+    </modules>
+  </component>
+</project>

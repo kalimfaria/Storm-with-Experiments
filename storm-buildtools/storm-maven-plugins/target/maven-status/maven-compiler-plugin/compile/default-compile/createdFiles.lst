@@ -1,0 +1,6 @@
+org/apache/storm/maven/plugin/versioninfo/VersionInfoMojo$2.class
+org/apache/storm/maven/plugin/versioninfo/VersionInfoMojo$1.class
+org/apache/storm/maven/plugin/util/CommandExec$OutputBufferThread.class
+org/apache/storm/maven/plugin/util/CommandExec.class
+org/apache/storm/maven/plugin/versioninfo/VersionInfoMojo.class
+org/apache/storm/maven/plugin/versioninfo/VersionInfoMojo$SCM.class

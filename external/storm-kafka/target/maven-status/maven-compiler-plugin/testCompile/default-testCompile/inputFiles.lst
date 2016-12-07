@@ -1,0 +1,11 @@
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/DynamicBrokersReaderTest.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/ExponentialBackoffMsgRetryManagerTest.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/TridentKafkaTopology.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/TridentKafkaTest.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/KafkaErrorTest.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/KafkaTestBroker.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/bolt/KafkaBoltTest.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/TestUtils.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/KafkaUtilsTest.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/StringKeyValueSchemeTest.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-kafka/src/test/storm/kafka/ZkCoordinatorTest.java

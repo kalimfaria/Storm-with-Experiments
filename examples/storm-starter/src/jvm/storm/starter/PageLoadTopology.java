@@ -12,7 +12,7 @@ import backtype.storm.topology.TopologyBuilder;
 public class PageLoadTopology {
 	public static void main(String[] args) throws Exception {
 		//int numBolt = 3;
-		int paralellism = 10; // changed from 50 to 10
+		int paralellism = 2; // changed from 50 to 10
 
 		TopologyBuilder builder = new TopologyBuilder();
 

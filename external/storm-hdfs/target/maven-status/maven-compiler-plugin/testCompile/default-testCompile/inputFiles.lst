@@ -1,0 +1,5 @@
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hdfs/src/test/java/org/apache/storm/hdfs/bolt/HdfsFileTopology.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hdfs/src/test/java/org/apache/storm/hdfs/trident/FixedBatchSpout.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hdfs/src/test/java/org/apache/storm/hdfs/trident/TridentFileTopology.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hdfs/src/test/java/org/apache/storm/hdfs/bolt/SequenceFileTopology.java
+/home/lexu/workspace/Storm-with-Experiments/external/storm-hdfs/src/test/java/org/apache/storm/hdfs/trident/TridentSequenceTopology.java

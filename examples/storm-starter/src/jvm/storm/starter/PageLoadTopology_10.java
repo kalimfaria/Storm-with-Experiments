@@ -29,6 +29,7 @@ public class PageLoadTopology_10 {
 
 		Config conf = new Config();
 		conf.setTopologySlo(1.0);
+		conf.setTopologySensitivity("throughput");
 		conf.setDebug(true);
 
 		conf.setNumAckers(0);

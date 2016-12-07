@@ -1,0 +1,12 @@
+org/apache/storm/hive/trident/TridentHiveTopology.class
+org/apache/storm/hive/bolt/TestHiveBolt.class
+org/apache/storm/hive/bolt/HiveTopologyPartitioned$UserDataSpout.class
+org/apache/storm/hive/bolt/HiveSetupUtil$RawFileSystem.class
+org/apache/storm/hive/bolt/TestHiveBolt$1.class
+org/apache/storm/hive/trident/TridentHiveTopology$FixedBatchSpout.class
+org/apache/storm/hive/bolt/HiveTopologyPartitioned.class
+org/apache/storm/hive/common/TestHiveWriter$1.class
+org/apache/storm/hive/bolt/HiveSetupUtil.class
+org/apache/storm/hive/bolt/HiveTopology$UserDataSpout.class
+org/apache/storm/hive/common/TestHiveWriter.class
+org/apache/storm/hive/bolt/HiveTopology.class

@@ -11,7 +11,7 @@
  public class ProcessingTopology_LessSLO {
      public static void main(String[] args) throws Exception {
          //int numBolt = 3;
-         int paralellism = 8;
+         int paralellism = 2;
 
          TopologyBuilder builder = new TopologyBuilder();
 

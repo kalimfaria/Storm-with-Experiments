@@ -1,0 +1,6 @@
+org/apache/storm/jdbc/spout/UserSpout.class
+org/apache/storm/jdbc/common/JdbcClientTest.class
+org/apache/storm/jdbc/topology/UserPersistanceTopology.class
+org/apache/storm/jdbc/common/UtilTest.class
+org/apache/storm/jdbc/topology/AbstractUserTopology.class
+org/apache/storm/jdbc/topology/UserPersistanceTridentTopology.class

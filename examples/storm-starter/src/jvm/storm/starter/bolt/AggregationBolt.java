@@ -35,14 +35,26 @@ public class AggregationBolt extends BaseRichBolt{
     	word+=Byte.toString(b);
     	word+=Byte.toString(b);
     	word+=Byte.toString(b);
+        String spout = "no";
+        Long time = -1l;
 
-      _collector.emit(tuple, new Values(word));
-      //_collector.ack(tuple);
+        if (tuple.contains("word"))
+            word = tuple.getStringByField("word");
+        if (tuple.contains("spout"))
+            spout = tuple.getStringByField("spout");
+        if (tuple.contains("time"))
+            time = tuple.getLongByField("time");
+        //if(_rand.nextDouble()<0.8){
+            // _collector.emit(tuple, new Values(word));
+            _collector.emit(tuple, new Values(word, spout, time));
+      //_collector.emit(tuple, new Values(word));
+         _collector.ack(tuple);
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-      declarer.declare(new Fields("word"));
+      //declarer.declare(new Fields("word"));
+        declarer.declare(new Fields("word", "spout", "time"));
     }
 }
 

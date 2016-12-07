@@ -1,0 +1,12 @@
+org/apache/storm/eventhubs/trident/TridentCollectorMock.class
+org/apache/storm/eventhubs/spout/EventHubReceiverMock.class
+org/apache/storm/eventhubs/spout/StateStoreMock.class
+org/apache/storm/eventhubs/spout/SpoutOutputCollectorMock.class
+org/apache/storm/eventhubs/spout/EventHubSpoutCallerMock$1.class
+org/apache/storm/eventhubs/spout/TestEventData.class
+org/apache/storm/eventhubs/trident/TestTransactionalTridentEmitter$1.class
+org/apache/storm/eventhubs/spout/TestPartitionManager.class
+org/apache/storm/eventhubs/spout/PartitionManagerCallerMock.class
+org/apache/storm/eventhubs/spout/EventHubSpoutCallerMock.class
+org/apache/storm/eventhubs/spout/TestEventHubSpout.class
+org/apache/storm/eventhubs/trident/TestTransactionalTridentEmitter.class

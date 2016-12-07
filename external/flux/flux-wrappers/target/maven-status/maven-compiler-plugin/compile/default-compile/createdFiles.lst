@@ -1,0 +1,3 @@
+org/apache/storm/flux/wrappers/spouts/FluxShellSpout.class
+org/apache/storm/flux/wrappers/bolts/FluxShellBolt.class
+org/apache/storm/flux/wrappers/bolts/LogInfoBolt.class

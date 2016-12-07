@@ -402,7 +402,7 @@
 
 (defn- alive-executors
   [nimbus ^TopologyDetails topology-details all-executors existing-assignment]
-  (log-debug "Computing alive executors for " (.getId topology-details) "\n"
+  (log-message "Computing alive executors for " (.getId topology-details) "\n"
     "Executors: " (pr-str all-executors) "\n"
     "Assignment: " (pr-str existing-assignment) "\n"
     "Heartbeat cache: " (pr-str (@(:heartbeats-cache nimbus) (.getId topology-details)))
@@ -469,13 +469,15 @@
 
 (defn- compute-topology->alive-executors [nimbus existing-assignments topologies topology->executors scratch-topology-id]
   "compute a topology-id -> alive executors map"
+  (log-message "compute-topology->alive-executors")
   (into {} (for [[tid assignment] existing-assignments
                  :let [topology-details (.getById topologies tid)
                        all-executors (topology->executors tid)
                        alive-executors (if (and scratch-topology-id (= scratch-topology-id tid))
                                          all-executors
                                          (set (alive-executors nimbus topology-details all-executors assignment)))]]
-             {tid alive-executors})))
+             {tid alive-executors}))
+  )
 
 (defn- compute-supervisor->dead-ports [nimbus existing-assignments topology->executors topology->alive-executors]
   (let [dead-slots (into [] (for [[tid assignment] existing-assignments
@@ -567,6 +569,7 @@
 
 ;; public so it can be mocked out
 (defn compute-new-topology->executor->node+port [nimbus existing-assignments topologies scratch-topology-id]
+  (log-message "In compute-new-topology->executor->node+port")
   (let [conf (:conf nimbus)
         storm-cluster-state (:storm-cluster-state nimbus)
         topology->executors (compute-topology->executors nimbus (keys existing-assignments))
@@ -612,6 +615,7 @@
         new-scheduler-assignments (.getAssignments cluster)
         ;; add more information to convert SchedulerAssignment to Assignment
         new-topology->executor->node+port (compute-topology->executor->node+port new-scheduler-assignments)]
+
     (reset! (:id->sched-status nimbus) (.getStatusMap cluster))
     ;; print some useful information.
     (doseq [[topology-id executor->node+port] new-topology->executor->node+port

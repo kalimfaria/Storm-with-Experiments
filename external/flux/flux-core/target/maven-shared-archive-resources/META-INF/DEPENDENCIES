@@ -1,0 +1,27 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+flux-core
+
+
+From: 'an unknown organization'
+  - SnakeYAML (http://www.snakeyaml.org) org.yaml:snakeyaml:bundle:1.11
+    License: Apache License Version 2.0  (LICENSE.txt)
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Commons CLI (http://commons.apache.org/cli/) commons-cli:commons-cli:jar:1.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - flux-wrappers (http://storm.apache.org/external/flux/flux-wrappers) org.apache.storm:flux-wrappers:jar:0.10.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - multilang-javascript (http://storm.apache.org/storm-multilang/multilang-javascript) org.apache.storm:multilang-javascript:jar:0.10.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - multilang-python (http://storm.apache.org/storm-multilang/multilang-python) org.apache.storm:multilang-python:jar:0.10.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - multilang-ruby (http://storm.apache.org/storm-multilang/multilang-ruby) org.apache.storm:multilang-ruby:jar:0.10.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+
